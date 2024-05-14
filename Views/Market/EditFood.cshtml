@@ -112,6 +112,7 @@
                                 string flip = Model.SalesGrowth > 0.01 ? "" : "scale-y-[-1]";
                                 color = soldEnoughData ? color : "";
                                 string visible = soldEnoughData && Model.SalesGrowth != 0 ? "" : "hidden";
+                                Model.SalesGrowth = !soldEnoughData ? 0 : Model.SalesGrowth;
                             }
                             <div class="flex items-center px-2.5 py-0.5 text-base font-semibold @color dark:text-green-500 text-center">
                                 @Model.SalesGrowth.ToString("0.00") %
@@ -174,6 +175,7 @@
                                 string f = Model.PriceGrowth > 0.01 ? "" : "scale-y-[-1]";
                                 c = pricesEnoughData ? c : "";
                                 string vsible = pricesEnoughData && Model.PriceGrowth != 0 ? "" : "hidden";
+                                Model.PriceGrowth = !pricesEnoughData ? 0 : Model.PriceGrowth;
                             }
                             <div class="flex items-center px-2.5 py-0.5 text-base font-semibold @c dark:text-green-500 text-center">
                                 @Model.PriceGrowth.ToString("0.00") %
@@ -267,9 +269,9 @@
                         percentageOfFive = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFive%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFive.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFive%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFive.ToString("0.00")%</span>
             </div>
             <div class="flex items-center mt-4">
                 <a class="text-sm font-medium text-primary dark:text-primary hover:underline">4 star</a>
@@ -280,9 +282,9 @@
                         percentageOfFour = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFour%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFour.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFour%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFour.ToString("0.00")%</span>
             </div>
             <div class="flex items-center mt-4">
                 <a class="text-sm font-medium text-primary dark:text-primary hover:underline">3 star</a>
@@ -293,9 +295,9 @@
                         percentageOfThree = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfThree%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfThree.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfThree%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfThree.ToString("0.00")%</span>
             </div>
             <div class="flex items-center mt-4">
                 <a class="text-sm font-medium text-primary dark:text-primary hover:underline">2 star</a>
@@ -306,9 +308,9 @@
                         percentageOfTwo = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfTwo%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfTwo.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfTwo%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfTwo.ToString("0.00")%</span>
             </div>
             <div class="flex items-center mt-4">
                 <a class="text-sm font-medium text-primary dark:text-primary hover:underline">1 star</a>
@@ -319,9 +321,9 @@
                         percentageOfOne = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfOne%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfOne.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfOne%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfOne.ToString("0.00")%</span>
             </div>
 
             <!-- Comments -->
