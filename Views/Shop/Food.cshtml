@@ -1,0 +1,445 @@
+﻿@using LutongBahayApp.ViewModels
+@model FoodItemViewModel
+@{
+
+}
+
+<div class="relative" id="home">
+    <div class="relative pt-10 ml-auto">
+        <div class="lg:w-2/3 mx-auto w-11/12">
+
+            <!-- Breadcrumb -->
+            <nav class="max-w-sm mt-4 mb-6 flex px-5 py-3 text-gray-700 overflow-auto" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                    <li class="inline-flex items-center">
+                        <a asp-action="Index" asp-controller="Home" class="whitespace-nowrap inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-400 dark:hover:text-white">
+                            <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                            </svg>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                            </svg>
+                             <a asp-action="Index" asp-controller="Shop" class="whitespace-nowrap ms-1 text-sm font-medium text-gray-700 md:ms-2 dark:text-gray-400 hover:text-primary dark:text-gray-400 dark:hover:text-white">Shop</a>
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                            </svg>
+                            <span class="whitespace-nowrap ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">@Model.Name<span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Main Section -->
+            
+            <div class="w-full border bg-white border border-gray-200 rounded-lg shadow flex md:flex-row flex-col px-4 py-2">
+                <div class="md:w-1/2 w-full md:mr-3">
+                    <img class="object-cover w-full" src="@Url.Content(@Model.ImagePath)" alt="">
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <h2 class="mb-2 text-3xl font-bold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">@Model.Name</h2>
+                    <p class="text-2xl text-primary">@Model.Price.ToString("C")</p>
+                    <p class="text-lg my-2 text-gray-600">@Model.Description</p>
+                    <input class="hidden" value="@Model.Id" id="foodId" disabled>
+                    <!-- Quantity -->
+                    <div class="max-w-xs">
+                        <label for="quantity-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Quantity:</label>
+                        <div class="relative flex items-center max-w-[8rem]">
+                            <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                                </svg>
+                            </button>
+                            <input type="text" id="quantity-input" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-primary focus:border-primary block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary dark:focus:border-primary" placeholder="1" required />
+                            <button type="button" id="increment-button" data-input-counter-increment="quantity-input" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-x-3 my-2 w-max">
+                        @{
+                            var roleClaim = ((System.Security.Claims.ClaimsIdentity)User.Identity)
+                            .Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role);
+                            string userRole = roleClaim != null ? roleClaim.Value : "No role found";
+                        }
+                        @if (User.Identity.IsAuthenticated )
+                        {
+                            @if (@userRole == "Customer"){
+                                <button type="button" class="cursor-pointer text-white bg-primary hover:scale-105 transition ease-out focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button>
+                                <button type="button" id="add-cart" class="text-primary border border-primary font-medium rounded-lg text-sm px-4 py-2 hover:scale-105 transition ease-out dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Add to Basket</button>
+                            }else{
+                                <button disabled class="cursor-not-allowed opacity-50 text-white bg-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button>
+                                <button disabled class="cursor-not-allowed opacity-50 text-primary border border-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Add to Basket</button>                               
+                            }
+                            
+                        }else
+                        {
+                            <button disabledclass="cursor-not-allowed opacity-50 text-white bg-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button>
+                            <button disabled class="cursor-not-allowed opacity-50 text-primary border border-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Add to Basket</button>                          
+                        }
+                    </div>
+                    
+                    @if(!User.Identity.IsAuthenticated)
+                    {
+                        <p class="text-sm opacity-75">You need to login to order or add this to basket</p>
+                    }else
+                    {
+                        @if (@userRole != "Customer")
+                        {
+                            <p class="text-sm opacity-75">This functionality is disabled for @userRole</p>
+                        }
+                    }
+                </div>
+            </div>
+            
+            <!-- Market -->
+
+            <div class="my-5 w-full p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <div class="flex items-center justify-between w-full">
+                    <div class="flex item-center gap-x-2">
+                        <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">@Model.Market.Name</h5>
+                        @if (Model.Market.IsVerified)
+                        {
+                            <span class="inline-flex items-center justify-center w-6 h-6 me-2 text-sm font-semibold text-primary rounded-full dark:text-blue-400">
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill="currentColor" d="m18.774 8.245-.892-.893a1.5 1.5 0 0 1-.437-1.052V5.036a2.484 2.484 0 0 0-2.48-2.48H13.7a1.5 1.5 0 0 1-1.052-.438l-.893-.892a2.484 2.484 0 0 0-3.51 0l-.893.892a1.5 1.5 0 0 1-1.052.437H5.036a2.484 2.484 0 0 0-2.48 2.481V6.3a1.5 1.5 0 0 1-.438 1.052l-.892.893a2.484 2.484 0 0 0 0 3.51l.892.893a1.5 1.5 0 0 1 .437 1.052v1.264a2.484 2.484 0 0 0 2.481 2.481H6.3a1.5 1.5 0 0 1 1.052.437l.893.892a2.484 2.484 0 0 0 3.51 0l.893-.892a1.5 1.5 0 0 1 1.052-.437h1.264a2.484 2.484 0 0 0 2.481-2.48V13.7a1.5 1.5 0 0 1 .437-1.052l.892-.893a2.484 2.484 0 0 0 0-3.51Z" />
+                                    <path fill="#fff" d="M8 13a1 1 0 0 1-.707-.293l-2-2a1 1 0 1 1 1.414-1.414l1.42 1.42 5.318-3.545a1 1 0 0 1 1.11 1.664l-6 4A1 1 0 0 1 8 13Z" />
+                                </svg>
+                                <span class="sr-only">Icon description</span>
+                            </span>
+                        }
+                    </div>
+                    <a asp-action="Market" asp-controller="Shop" asp-route-id="@Model.Market.Id" asp-route-foodName="@Model.Name" asp-route-foodId="@Model.Id" class="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-primary rounded-lg border border-primary hover:bg-transparent hover:text-primary focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Visit Market
+                        <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h12m0 0L9 1m4 4L9 9" />
+                        </svg>
+                    </a>
+                </div>
+                <p class="mb-2 text-sm text-medium opacity-75">@Model.Market.Address</p>
+                <div class="w-full flex md:flex-row flex-col md:items-center md:justify-between">
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Products: @Model.Market.Foods.Count()</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Joined: @Model.Market.DateCreated.ToString("MMMM d, yyyy")</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Sold Products: TBA</p>
+                    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400">Reviews: @Model.MarketTotalReviews</p>
+                </div>
+                
+            </div>
+
+            <!-- Ratings -->
+            <h2 class="text-3xl mt-4 font-bold dark:text-white">Ratings</h2>
+            <div class="flex items-center mb-4 m-auto">
+                @{
+                    int roundedRating;
+
+                    if (Model.Rating != 0)
+                    {
+                        roundedRating = (int)Math.Round(Model.Rating, MidpointRounding.AwayFromZero);
+                    }
+                    else
+                    {
+                        roundedRating = 0;
+                    }
+                }
+                @for (int i = 0; i < 5; i++)
+                {
+                    @if (i < roundedRating)
+                    {
+                        <svg class="w-4 h-4 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                    }
+                    else
+                    {
+                        <svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                    }
+
+                }
+                <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">@Model.Rating.ToString("0.00")</p>
+                <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">out of</p>
+                <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
+            </div>
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">@Model.Reviews.Count() total ratings</p>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">
+                    5 star
+                </a>
+                @{
+                    var percentageOfFive = (double)Model.Reviews.Where(r => r.Rating == 5).Count() / Model.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfFive))
+                        percentageOfFive = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFive%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFive%</span>
+            </div>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">4 star</a>
+                @{
+                    var percentageOfFour = (double)Model.Reviews.Where(r => r.Rating == 4).Count() / Model.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfFour))
+                        percentageOfFour = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFour%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFour%</span>
+            </div>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">3 star</a>
+                @{
+                    var percentageOfThree = (double)Model.Reviews.Where(r => r.Rating == 3).Count() / Model.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfThree))
+                        percentageOfThree = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfThree%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfThree%</span>
+            </div>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">2 star</a>
+                @{
+                    var percentageOfTwo = (double)Model.Reviews.Where(r => r.Rating == 2).Count() / Model.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfTwo))
+                        percentageOfTwo = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfTwo%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfTwo%</span>
+            </div>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">1 star</a>
+                @{
+                    var percentageOfOne = (double)Model.Reviews.Where(r => r.Rating == 1).Count() / Model.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfOne))
+                        percentageOfOne = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfOne%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfOne%</span>
+            </div>
+
+            <!-- Comments -->
+            <h2 class="text-3xl mt-4 font-bold dark:text-white">Reviews</h2>
+               
+            <div class="mt-2">
+                <article class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 p-4 my-2">
+                    <div class="flex items-center mb-4">
+                        @{
+                            var pPath = "/images//profiles//no_pfp.jpg";
+                        }
+                        <div class="font-medium dark:text-white">
+                            <p>Write a Review</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <svg class="w-5 h-5 mb-1 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                            </svg>
+
+                        }                       
+                    </div>
+                    <form>
+                        <input hidden name="rating" value="0"/>
+                        <div class="mb-2">
+                            <input placeholder="Title" type="text" id="title" name="title" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                        </div>
+                        <div>
+                            <textarea id="comment" name="comment" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Comment" required></textarea>
+                        </div>
+                        <button type="submit" class="mt-2 text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+                    </form>
+                </article>
+            </div>
+
+            @foreach(var review in Model.Reviews)
+            {
+                <div class="mt-2">
+                    <article class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 p-4 my-2">
+                        <div class="flex items-center mb-4">
+                            @{
+                                var pfpPath = review.User.ProfileImagePath;
+
+                                if (review.User.ProfileImagePath == null || review.User.ProfileImagePath == string.Empty)
+                                {
+                                    pfpPath = "/images//profiles//no_pfp.jpg";
+                                }
+                            }
+                            <img class="w-10 h-10 me-4 rounded-full" src="@Url.Content(pfpPath)" alt="">
+                            <div class="font-medium dark:text-white">
+                                <p>@review.User.UserName <time class="block text-sm text-gray-500 dark:text-gray-400">@review.DateCreated.ToString("MMMM d, yyyy")</time></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                @if (i < review.Rating)
+                                {
+                                    <svg class="w-4 h-4 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                }
+                                else
+                                {
+                                    <svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                }
+
+                            }
+                            <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">@review.Title</h3>
+                        </div>
+                        <footer class="mb-5 text-sm text-gray-500 dark:text-gray-400"><p>Reviewed in @review.User.Address</p></footer>
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">@review.Comment</p>
+              
+                        @*<aside>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">@review.HelpfulCount people found this helpful</p>
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <div class="flex items-center mt-3">
+                                    <a class="cursor-pointer px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Helpful</a>
+                                    <a class="cursor-pointer ps-4 text-sm font-medium text-primary hover:underline dark:text-primary border-gray-200 ms-4 border-s md:mb-0 dark:border-gray-600">Report abuse</a>
+                                </div>
+                            }
+                        </aside>*@
+                    </article>
+                </div>
+            }
+            @if (!Model.Reviews.Any())
+            {
+                <div class="mt-2">
+                    <h2 class="text-xl font-medium opacity-75 text-gray-400">No reviews yet</h2>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div id="toast-danger" class="hidden border-red-500 border bottom-2 right-2 flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-red-500 bg-red-100 rounded-lg dark:bg-red-800 dark:text-red-200">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 11.793a1 1 0 1 1-1.414 1.414L10 11.414l-2.293 2.293a1 1 0 0 1-1.414-1.414L8.586 10 6.293 7.707a1 1 0 0 1 1.414-1.414L10 8.586l2.293-2.293a1 1 0 0 1 1.414 1.414L11.414 10l2.293 2.293Z" />
+        </svg>
+        <span class="sr-only">Error icon</span>
+    </div>
+    <div class="ms-3 text-sm font-normal">Add to basket unsuccessful</div>
+    <button id="hide-danger-toast" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-danger" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+        </svg>
+    </button>
+</div>
+
+<div id="toast-success" class="hidden border-green-300 bottom-2 right-2 border flex items-center w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800" role="alert">
+    <div class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+        </svg>
+        <span class="sr-only">Check icon</span>
+    </div>
+    <div class="ms-3 text-sm font-normal">Add to basket successfully.</div>
+    <button id="hide-success-toast" type="button" class="ms-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+        <span class="sr-only">Close</span>
+        <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+        </svg>
+    </button>
+</div>
+
+<script>
+    const decrementButton = document.getElementById('decrement-button');
+    const incrementButton = document.getElementById('increment-button');
+    const quantityInput = document.getElementById('quantity-input');
+    const foodId = document.getElementById('foodId');
+
+    decrementButton.addEventListener('click', () => {
+      let currentValue = parseInt(quantityInput.value) || 1; // Handle empty input as 0
+      if (currentValue > 1) {
+        currentValue--;
+        quantityInput.value = currentValue;
+      }
+    });
+
+    incrementButton.addEventListener('click', () => {
+      let currentValue = parseInt(quantityInput.value) || 1; // Handle empty input as 0
+      currentValue++;
+      quantityInput.value = currentValue;
+    });
+
+    const addCartButton = document.getElementById('add-cart');
+    addCartButton.addEventListener('click', () => {
+        const foodId = document.getElementById('foodId').value;
+        const quantity = document.getElementById('quantity-input').value || 1;
+
+        fetch('/Basket/AddToBasket', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ foodId, quantity }) // Send quantity as JSON
+        })
+        .then(data => {
+            showSuccessToast();
+        })
+        .catch(error => {
+            showDangerToast();
+        });
+    });
+
+    function showDangerToast(){
+        const toastDanger = document.getElementById('toast-danger');
+        toastDanger.classList.remove('hidden');
+        toastDanger.classList.add('sticky');
+
+        const toastSuccess = document.getElementById('toast-success');
+        toastSuccess.classList.remove('sticky');
+        toastSuccess.classList.add('hidden');
+    }
+
+    function showSuccessToast() {
+        const toastSuccess = document.getElementById('toast-success');
+        toastSuccess.classList.remove('hidden');
+        toastSuccess.classList.add('sticky');
+
+        const toastDanger = document.getElementById('toast-danger');
+        toastDanger.classList.remove('sticky');
+        toastDanger.classList.add('hidden');
+    }
+
+    document.getElementById('hide-danger-toast').addEventListener('click',() => {
+        const toast = document.getElementById('toast-danger');
+        toast.classList.remove('sticky');
+        toast.classList.add('hidden');
+    })
+
+    document.getElementById('hide-success-toast').addEventListener('click', () => {
+        const toast = document.getElementById('toast-success');
+        toast.classList.remove('sticky');
+        toast.classList.add('hidden');
+    })
+</script>

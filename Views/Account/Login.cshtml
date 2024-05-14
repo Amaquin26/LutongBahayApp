@@ -1,0 +1,49 @@
+﻿@using LutongBahayApp.ViewModels
+@model LoginViewModel
+
+@{
+}
+
+<div class="relative">
+    <div class="relative pt-10 ml-auto">
+        <div class="lg:w-2/3 mx-auto w-11/12">
+            <div class="w-full m-auto max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700">
+                
+                @if (TempData["Error"] != null)
+                {
+                    <div class="p-4 mb-4 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
+                        <span class="font-medium">Error!</span> - @TempData["Error"]
+                    </div>
+                }
+
+                <form class="space-y-6" asp-action="Login">
+                    <h5 class="text-xl font-medium text-gray-900 dark:text-white">Login to Lutong Lokal</h5>
+                    <div>
+                        <label asp-for="EmailAddress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                        <input asp-for="EmailAddress" type="email" id="email" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+                    <div>
+                        <label asp-for="Password" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                        <input asp-for="Password" id="password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primaryblock w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white" required />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex items-start">
+                            <div class="flex items-center h-5">
+                                <input asp-for="RememberMe" type="checkbox" style="accent-color: #FF7F11;" class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800" />
+                            </div>
+                            <label for="remember" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Remember me</label>
+                        </div>
+                        <a href="#" class="ms-auto text-sm text-primary hover:underline dark:text-primary">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="w-full text-white bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Login</button>
+                    <div class="text-sm font-medium text-gray-500 dark:text-gray-300">
+                        Not registered? <a asp-action="RegisterCustomer" class="text-primary hover:underline dark:text-primary">Register account</a> or <a asp-action="RegisterSeller" class="text-primary hover:underline dark:text-primary">Start Selling</a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>

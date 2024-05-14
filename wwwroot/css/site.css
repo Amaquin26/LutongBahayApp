@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+input[type="file"]::file-selector-button {
+    background-color: #FF7F11 !important;
+    border-color: #FF7F11 !important;
+    color: white !important;
+}

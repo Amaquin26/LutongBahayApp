@@ -1,0 +1,602 @@
+﻿@using LutongBahayApp.ViewModels
+@model ManageFoodViewModel
+
+@{
+    var pricesData = Model.FoodPriceChange.Select(x => x.Price).ToList();
+    var pricesDate = Model.FoodPriceChange.Select(x => x.DateChanged.ToString("MMM dd")).ToList();
+    var soldData = Model.SoldFoodMetric.Select(x => x.SoldCount).ToList();
+
+    var dates = new List<string>()
+    {
+        DateTime.Today.Date.AddDays(-4).ToString("MMM dd"),
+        DateTime.Today.Date.AddDays(-3).ToString("MMM dd"),
+        DateTime.Today.Date.AddDays(-2).ToString("MMM dd"),
+        DateTime.Today.Date.AddDays(-1).ToString("MMM dd"),
+        DateTime.Today.Date.ToString("MMM dd"), 
+    };
+
+    bool pricesEnoughData = true;
+    bool soldEnoughData = true;
+
+    if(pricesData.Count != 5)
+    {
+        pricesData = [0, 0, 0, 0, 0];
+        pricesEnoughData = false;
+    }
+
+    if (soldData.Count != 5)
+    {
+        soldData = [0, 0, 0, 0, 0];
+        soldEnoughData = false;
+    }
+}
+
+<div class="relative" id="home">
+    <div class="relative pt-10 ml-auto">
+        <div class="lg:w-2/3 mx-auto w-11/12">
+
+            <!-- Breadcrumb -->
+            <nav class="max-w-sm mt-4 mb-6 flex px-5 py-3 text-gray-700 overflow-auto" aria-label="Breadcrumb">
+                <ol class="inline-flex items-center space-x-1 md:space-x-2 rtl:space-x-reverse">
+                    <li class="inline-flex items-center">
+                        <a asp-action="Index" asp-controller="Home" class="whitespace-nowrap inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-400 dark:hover:text-white">
+                            <svg class="w-3 h-3 me-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="m19.707 9.293-2-2-7-7a1 1 0 0 0-1.414 0l-7 7-2 2a1 1 0 0 0 1.414 1.414L2 10.414V18a2 2 0 0 0 2 2h3a1 1 0 0 0 1-1v-4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v4a1 1 0 0 0 1 1h3a2 2 0 0 0 2-2v-7.586l.293.293a1 1 0 0 0 1.414-1.414Z" />
+                            </svg>
+                            Dashboard
+                        </a>
+                    </li>
+                    <li>
+                        <div class="flex items-center">
+                            <a asp-action="Manage" asp-controller="Market" asp-route-id="@Model.FoodItemViewModel.Market.Id" class="whitespace-nowrap inline-flex items-center text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-400 dark:hover:text-white">
+                                <svg class="rtl:rotate-180 block w-3 h-3 mx-1 text-gray-400 " aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                                </svg>
+                                @Model.FoodItemViewModel.Market.Name
+                            </a>                           
+                        </div>
+                    </li>
+                    <li aria-current="page">
+                        <div class="flex items-center">
+                            <svg class="rtl:rotate-180  w-3 h-3 mx-1 text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                            </svg>
+                            <span class="whitespace-nowrap ms-1 text-sm font-medium text-gray-500 md:ms-2 dark:text-gray-400">@Model.FoodItemViewModel.Name<span>
+                        </div>
+                    </li>
+                </ol>
+            </nav>
+
+            <!-- Main Section -->
+
+            <div class="w-full border bg-white border border-gray-200 rounded-lg shadow flex md:flex-row flex-col px-4 py-2">
+                <div class="md:w-1/2 w-full md:mr-3">
+                    <img class="object-cover w-full" src="@Url.Content(@Model.FoodItemViewModel.ImagePath)" alt="">
+                </div>
+                <div class="md:w-1/2 w-full">
+                    <h2 class="mb-2 text-3xl font-bold leading-none tracking-tight text-gray-900 md:text-4xl dark:text-white">@Model.FoodItemViewModel.Name</h2>
+                    <p class="text-2xl text-primary">@Model.FoodItemViewModel.Price.ToString("C")</p>
+                    <p class="text-lg my-2 text-gray-600">@Model.FoodItemViewModel.Description</p>
+                    <input class="hidden" value="@Model.FoodItemViewModel.Id" id="foodId" disabled>
+                   
+                    <div class="flex items-center gap-x-3 my-2 w-max">
+                        <button onclick="openFoodModal()" type="button" class="text-white bg-primary border border-primary font-medium rounded-lg text-sm px-4 py-2 hover:scale-105 transition ease-out dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Edit Food</button>              
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chart -->
+            <div class="my-5 w-full p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+                <h2 class="text-2xl mt-4 font-bold dark:text-white mb-2">Total Sold: <span class="font-medium">@Model.TotalSold</span></h2>        
+                
+                <div class="flex justify-around items-center flex-col md:flex-row gap-2">
+
+                    <div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+                        <div class="flex justify-between">
+                            <div>
+                                <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">@Model.SoldFoodMetric.Select(x => x.SoldCount).Sum()</h5>
+                                @if (soldEnoughData)
+                                {
+                                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Sold this last 5 days</p>
+                                }else
+                                {
+                                    <p class="text-base font-normal text-red-500 dark:text-gray-400">Not Enough Data</p>
+                                }                              
+                            </div>
+                            @{
+                                string color = Model.SalesGrowth > 0.01 ? "text-green-500" : "text-red-500";
+                                string flip = Model.SalesGrowth > 0.01 ? "" : "scale-y-[-1]";
+                                color = soldEnoughData ? color : "";
+                                string visible = soldEnoughData ? "" : "hidden";
+                            }
+                            <div class="flex items-center px-2.5 py-0.5 text-base font-semibold @color dark:text-green-500 text-center">
+                                @Model.SalesGrowth.ToString("0.00") %
+
+                                <svg class="w-3 h-3 ms-1 @flip @visible" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="area-chart"></div>
+                        <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
+                            <div class="flex justify-between items-center pt-5">
+                                <!-- Button -->
+                                <button data-dropdown-toggle="lastDaysdropdown"
+                                        data-dropdown-placement="bottom"
+                                        class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
+                                        type="button">
+                                    Last 5 days
+                                </button>
+                                <!-- Dropdown menu -->
+                                <div class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 7 days</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 30 days</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 90 days</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6">
+                        <div class="flex justify-between">
+                            <div>
+                                <h5 class="leading-none text-3xl font-bold text-gray-900 dark:text-white pb-2">@Model.FoodItemViewModel.Price.ToString("C")</h5>
+                                @if (pricesEnoughData)
+                                {
+                                    <p class="text-base font-normal text-gray-500 dark:text-gray-400">Current Price</p>
+                                }
+                                else
+                                {
+                                    <p class="text-base font-normal text-red-500 dark:text-gray-400">Not Enough Data</p>
+                                }                               
+                            </div>
+                            @{
+                                string c = Model.PriceGrowth > 0.01 ? "text-red-500" : "text-green-500";
+                                string f = Model.PriceGrowth > 0.01 ? "" : "scale-y-[-1]";
+                                c = pricesEnoughData ? c : "";
+                                string vsible = pricesEnoughData ? "" : "hidden";
+                            }
+                            <div class="flex items-center px-2.5 py-0.5 text-base font-semibold @c dark:text-green-500 text-center">
+                                @Model.PriceGrowth.ToString("0.00") %
+
+                                <svg class="w-3 h-3 ms-1 @f @vsible" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13V1m0 0L1 5m4-4 4 4" />
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="area-chart-price"></div>
+                        <div class="grid grid-cols-1 items-center border-gray-200 border-t dark:border-gray-700 justify-between">
+                            <div class="flex justify-between items-center pt-5">
+                                <!-- Button -->
+                                <button data-dropdown-toggle="lastDaysdropdown"
+                                        data-dropdown-placement="bottom"
+                                        class="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 text-center inline-flex items-center dark:hover:text-white"
+                                        type="button">
+                                    Last 5 days
+                                </button>
+                                <!-- Dropdown menu -->
+                                <div class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Yesterday</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Today</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 7 days</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 30 days</a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Last 90 days</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>            
+            </div>
+
+            <!-- Ratings -->
+            <h2 class="text-3xl mt-4 font-bold dark:text-white">Ratings</h2>
+            <div class="flex items-center mb-4 m-auto">
+                @{
+                    int roundedRating;
+
+                    if (Model.FoodItemViewModel.Rating != 0)
+                    {
+                        roundedRating = (int)Math.Round(Model.FoodItemViewModel.Rating, MidpointRounding.AwayFromZero);
+                    }
+                    else
+                    {
+                        roundedRating = 0;
+                    }
+                }
+                @for (int i = 0; i < 5; i++)
+                {
+                    @if (i < roundedRating)
+                    {
+                        <svg class="w-4 h-4 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                    }
+                    else
+                    {
+                        <svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                        </svg>
+                    }
+
+                }
+                <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">@Model.FoodItemViewModel.Rating.ToString("0.00")</p>
+                <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">out of</p>
+                <p class="ms-1 text-sm font-medium text-gray-500 dark:text-gray-400">5</p>
+            </div>
+            <p class="text-sm font-medium text-gray-500 dark:text-gray-400">@Model.FoodItemViewModel.Reviews.Count() total ratings</p>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">
+                    5 star
+                </a>
+                @{
+                    var percentageOfFive = (double)Model.FoodItemViewModel.Reviews.Where(r => r.Rating == 5).Count() / Model.FoodItemViewModel.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfFive))
+                        percentageOfFive = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFive%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFive%</span>
+            </div>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">4 star</a>
+                @{
+                    var percentageOfFour = (double)Model.FoodItemViewModel.Reviews.Where(r => r.Rating == 4).Count() / Model.FoodItemViewModel.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfFour))
+                        percentageOfFour = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFour%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFour%</span>
+            </div>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">3 star</a>
+                @{
+                    var percentageOfThree = (double)Model.FoodItemViewModel.Reviews.Where(r => r.Rating == 3).Count() / Model.FoodItemViewModel.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfThree))
+                        percentageOfThree = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfThree%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfThree%</span>
+            </div>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">2 star</a>
+                @{
+                    var percentageOfTwo = (double)Model.FoodItemViewModel.Reviews.Where(r => r.Rating == 2).Count() / Model.FoodItemViewModel.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfTwo))
+                        percentageOfTwo = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfTwo%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfTwo%</span>
+            </div>
+            <div class="flex items-center mt-4">
+                <a class="text-sm font-medium text-primary dark:text-primary hover:underline">1 star</a>
+                @{
+                    var percentageOfOne = (double)Model.FoodItemViewModel.Reviews.Where(r => r.Rating == 1).Count() / Model.FoodItemViewModel.Reviews.Count() * 100;
+
+                    if (double.IsNaN(percentageOfOne))
+                        percentageOfOne = 0;
+                }
+                <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfOne%"></div>
+                </div>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfOne%</span>
+            </div>
+
+            <!-- Comments -->
+            <h2 class="text-3xl mt-4 font-bold dark:text-white">Reviews</h2>
+            @foreach (var review in Model.FoodItemViewModel.Reviews)
+            {
+                <div class="mt-2">
+                    <article class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 p-4 my-2">
+                        <div class="flex items-center mb-4">
+                            @{
+                                var pfpPath = review.User.ProfileImagePath;
+
+                                if (review.User.ProfileImagePath == null || review.User.ProfileImagePath == string.Empty)
+                                {
+                                    pfpPath = "/images//profiles//no_pfp.jpg";
+                                }
+                            }
+                            <img class="w-10 h-10 me-4 rounded-full" src="@Url.Content(pfpPath)" alt="">
+                            <div class="font-medium dark:text-white">
+                                <p>@review.User.UserName <time class="block text-sm text-gray-500 dark:text-gray-400">@review.DateCreated.ToString("MMMM d, yyyy")</time></p>
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                @if (i < review.Rating)
+                                {
+                                    <svg class="w-4 h-4 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                }
+                                else
+                                {
+                                    <svg class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                }
+
+                            }
+                            <h3 class="ms-2 text-sm font-semibold text-gray-900 dark:text-white">@review.Title</h3>
+                        </div>
+                        <footer class="mb-5 text-sm text-gray-500 dark:text-gray-400"><p>Reviewed in @review.User.Address</p></footer>
+                        <p class="mb-2 text-gray-500 dark:text-gray-400">@review.Comment</p>
+
+                        @*<aside>
+                            <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">@review.HelpfulCount people found this helpful</p>
+                            <div class="flex items-center mt-3">
+                                <a class="cursor-pointer ps-4 text-sm font-medium text-primary hover:underline dark:text-primary md:mb-0 dark:border-gray-600">Report abuse</a>
+                            </div>
+                        </aside>*@
+                    </article>
+                </div>
+            }
+            @if (!Model.FoodItemViewModel.Reviews.Any())
+            {
+                <div class="mt-2">
+                    <h2 class="text-xl font-medium opacity-75 text-gray-400">No reviews yet</h2>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Food modal -->
+<div id="edit-food-modal" tabindex="-1" aria-hidden="true" class="hidden min-h-screen bg-gray-900/20 overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full m-auto">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700 px-4 py-2">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Edit Food
+                </h3>
+                <button type="button" onclick="closeFoodModal()" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <div class="flex items-center p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert">
+                <svg class="flex-shrink-0 inline w-4 h-4 me-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z" />
+                </svg>
+                <span class="sr-only">Info</span>
+                <div>
+                    <span class="font-medium">Warning alert!</span> Changing details may confuse your customer.
+                </div>
+            </div>
+            <!-- Modal body -->
+            <form asp-action="EditFoodDetail" method="post" enctype="multipart/form-data">
+                <div class="grid gap-4 mb-4 grid-cols-2">
+                    <input name="foodId" value="@Model.FoodItemViewModel.Id" type="hidden" class="hidden" required>
+                    <input name="marketId" value="@Model.FoodItemViewModel.Market.Id" type="hidden" class="hidden" required>
+                    <div class="col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
+                        <input name="name" value="@Model.FoodItemViewModel.Name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Food Name" required>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
+                        <input type="number" value="@Model.FoodItemViewModel.Price" name="price" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary focus:border-primary block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Food Price" required="">
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Food Description</label>
+                        <textarea name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write food description here"></textarea>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="small_size">Image File</label>
+                        <input name="filepath" class="block w-full mb-5 text-xs text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" type="file" accept="image/*">
+                        <p class="mt-1 text-sm text-gray-500 dark:text-gray-300" id="file_input_help">SVG, PNG, or JPG</p>
+
+                    </div>
+                </div>
+                <button type="submit" class="text-white inline-flex items-center bg-primary border border-primary transition ease-out hover:bg-transparent hover:text-primary focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary dark:focus:ring-orange-800">
+                    Edit Food
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    
+const options = {
+  chart: {
+    height: "100%",
+    maxWidth: "100%",
+    type: "area",
+    fontFamily: "Inter, sans-serif",
+    dropShadow: {
+      enabled: false,
+    },
+    toolbar: {
+      show: false,
+    },
+  },
+  tooltip: {
+    enabled: true,
+    x: {
+      show: false,
+    },
+  },
+  fill: {
+    type: "gradient",
+    gradient: {
+      opacityFrom: 0.55,
+      opacityTo: 0,
+      shade: "#FF7F11",
+      gradientToColors: ["#FF7F11"],
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    width: 6,
+  },
+  grid: {
+    show: false,
+    strokeDashArray: 4,
+    padding: {
+      left: 2,
+      right: 2,
+      top: 0
+    },
+  },
+  series: [
+    {
+      name: "Sold Count",
+      data: [@soldData[0], @soldData[1], @soldData[2], @soldData[3], @soldData[4]],
+      color: "#FF7F11",
+    },
+  ],
+  xaxis: {
+    categories: ['@dates[0]', '@dates[1]', '@dates[2]', '@dates[3]', '@dates[4]'],
+    labels: {
+      show: false,
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+}
+
+const optionsPrice = {
+  chart: {
+    height: "100%",
+    maxWidth: "100%",
+    type: "area",
+    fontFamily: "Inter, sans-serif",
+    dropShadow: {
+      enabled: false,
+    },
+    toolbar: {
+      show: false,
+    },
+  },
+  tooltip: {
+    enabled: true,
+    x: {
+      show: false,
+    },
+  },
+  fill: {
+    type: "gradient",
+    gradient: {
+      opacityFrom: 0.55,
+      opacityTo: 0,
+      shade: "#FF7F11",
+      gradientToColors: ["#FF7F11"],
+    },
+  },
+  dataLabels: {
+    enabled: false,
+  },
+  stroke: {
+    width: 6,
+  },
+  grid: {
+    show: false,
+    strokeDashArray: 4,
+    padding: {
+      left: 2,
+      right: 2,
+      top: 0
+    },
+  },
+  series: [
+    {
+      name: "Price",
+      data: [@pricesData[0], @pricesData[1], @pricesData[2], @pricesData[3], @pricesData[4]],
+      color: "#FF7F11",
+    },
+  ],
+  xaxis: {
+    categories: ['@dates[0]', '@dates[1]', '@dates[2]', '@dates[3]', '@dates[4]'],
+    labels: {
+      show: false,
+    },
+    axisBorder: {
+      show: false,
+    },
+    axisTicks: {
+      show: false,
+    },
+  },
+  yaxis: {
+    show: false,
+  },
+}
+
+if (document.getElementById("area-chart") && typeof ApexCharts !== 'undefined') {
+    const chart = new ApexCharts(document.getElementById("area-chart"), options);
+  chart.render();
+}
+
+if (document.getElementById("area-chart-price") && typeof ApexCharts !== 'undefined') {
+    const chart = new ApexCharts(document.getElementById("area-chart-price"), optionsPrice);
+  chart.render();
+}
+
+function closeFoodModal() {
+    const modal = document.getElementById("edit-food-modal");
+
+    modal.classList.remove("hidden");
+    modal.classList.add("hidden");
+}
+
+function openFoodModal() {
+    const modal = document.getElementById("edit-food-modal");
+
+    modal.classList.remove("hidden");
+}
+
+</script>
+

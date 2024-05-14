@@ -1,0 +1,53 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="relative" id="home">
+    <div aria-hidden="true" class="absolute inset-0 grid grid-cols-2 -space-x-52 opacity-40 dark:opacity-20">
+        <div class="blur-[106px] h-56 bg-gradient-to-br from-primary to-yellow-400 dark:from-blue-700"></div>
+        <div class="blur-[106px] h-32 bg-gradient-to-r from-green-400 to-orange-300 dark:to-indigo-600"></div>
+    </div>
+    <div class="relative pt-36 ml-auto">
+        <div class="lg:w-2/3 text-center mx-auto w-11/12">
+
+            <h1 class="text-gray-900 dark:text-white font-bold text-5xl md:text-6xl xl:text-7xl">
+                Taste <span class="text-primary dark:text-white">Local:</span> Flavorful dish straight to your door.
+            </h1>
+            <p class="mt-8 text-gray-700 dark:text-gray-300">
+                Tired of ordering fast food that is unhealthy and expensive? Now you can order inexpensive food from
+                karenderya and healthy home cooked meal. You also help local community and small businesses thrive.
+            </p>
+
+            <div class="my-2">
+                <form class="w-full">
+                    <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Enter your cravings" required />
+                        <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-primary hover:bg-primary focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Search</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="hidden py-8 mt-16 border-y border-gray-100 dark:border-gray-800 sm:flex justify-between">
+                <div class="text-left">
+                    <h6 class="text-lg font-semibold text-gray-700 dark:text-white">The lowest price</h6>
+                    <p class="mt-2 text-gray-500">Meals that will satify your craving without costing much.</p>
+                </div>
+                <div class="text-left">
+                    <h6 class="text-lg font-semibold text-gray-700 dark:text-white">Growing local market</h6>
+                    <p class="mt-2 text-gray-500">Helping small businesses and karenderyas thrive.</p>
+                </div>
+                <div class="text-left">
+                    <h6 class="text-lg font-semibold text-gray-700 dark:text-white">The most loved</h6>
+                    <p class="mt-2 text-gray-500">Budget-friendly and hassle-free service.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
