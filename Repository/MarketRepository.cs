@@ -303,7 +303,7 @@ namespace LutongBahayApp.Repository
             // Calculate daily growth/decline percentages
             var priceChanges = priceChange.Select(x => x.Price).ToList();
             decimal startPrice = priceChanges.Any() ? priceChanges[0] : 0;
-            decimal endPrice = priceChanges.Any() ? priceChanges[soldCounts.Count() - 1] : 0;
+            decimal endPrice = priceChanges.Any() ? priceChanges[priceChanges.Count() - 1] : 0;
             double priceGrowthRate = startPrice == 0 ? 0 : (double)((endPrice - startPrice) / startPrice) * 100;
 
             manageFoodViewModel.FoodItemViewModel = foodItem;
@@ -312,6 +312,7 @@ namespace LutongBahayApp.Repository
             manageFoodViewModel.SalesGrowth = soldGrowthRate;
             manageFoodViewModel.PriceGrowth = priceGrowthRate;
             manageFoodViewModel.TotalSold = totalSold;
+            manageFoodViewModel.TotalSales = food.Sales;
             return manageFoodViewModel;
         }
 

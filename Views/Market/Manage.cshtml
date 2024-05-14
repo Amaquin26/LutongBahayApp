@@ -1,6 +1,17 @@
 ﻿@using LutongBahayApp.ViewModels
 @model MarketPageInfoViewModel
 
+@{
+    var dates = new List<string>()
+    {
+        DateTime.Today.Date.AddDays(-4).ToString("MMM dd"),
+        DateTime.Today.Date.AddDays(-3).ToString("MMM dd"),
+        DateTime.Today.Date.AddDays(-2).ToString("MMM dd"),
+        DateTime.Today.Date.AddDays(-1).ToString("MMM dd"),
+        DateTime.Today.Date.ToString("MMM dd"),
+    };
+}
+
 <div class="relative">
     <div class="relative pt-10 ml-auto">
         <div class="lg:w-2/3 mx-auto w-11/12">
@@ -82,19 +93,27 @@
                 </form>
             </div>
 
-            <div class="w-full mb-4 border-b border-gray-200 dark:border-gray-700">
-                <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="default-tab" data-tabs-toggle="#default-tab-content" role="tablist">
-                    <li class="text-primary me-2" role="presentation">
-                        <button class="border-primary inline-block p-4 border-b-2 rounded-t-lg" id="profile-tab" data-tabs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">All Products</button>
-                    </li>
-                    <li class="me-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="dashboard-tab" data-tabs-target="#dashboard" type="button" role="tab" aria-controls="dashboard" aria-selected="false">Highly Rated</button>
-                    </li>
-                    <li class="me-2" role="presentation">
-                        <button class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300" id="settings-tab" data-tabs-target="#settings" type="button" role="tab" aria-controls="settings" aria-selected="false">Best Seller</button>
-                    </li>
-                </ul>
+
+            <div class="max-w-sm w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6 my-2">
+                <div class="w-full flex justify-between mb-5">
+                    <div class="w-full gap-4 flex items-center justify-between">
+                        <div>
+                            <h5 class="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">
+                                Sold Counts                             
+                            </h5>
+                            <p class="text-gray-900 dark:text-white text-2xl leading-none font-bold">42,3k</p>
+                        </div>
+                        <div>
+                            <h5 class="inline-flex items-center text-gray-500 dark:text-gray-400 leading-none font-normal mb-2">
+                                Sales                              
+                            </h5>
+                            <p class="text-gray-900 dark:text-white text-2xl leading-none font-bold">$5.40</p>
+                        </div>
+                    </div>                   
+                </div>
+                <div id="line-chart"></div>
             </div>
+
 
             <div class="mt-3 mb-1">
                 <button type="button" onclick="openFoodModal()" class="text-white inline-flex items-center bg-primary border border-primary transition ease-out hover:bg-transparent hover:text-primary focus:ring-4 focus:outline-none focus:ring-orange-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-primary dark:focus:ring-orange-800">
@@ -163,34 +182,6 @@
                     }
                 }              
             </div>
-
-            <!-- Pagination -->
-            <nav class="w-max m-auto mt-4">
-                <ul class="inline-flex -space-x-px text-sm">
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Previous</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="#" aria-current="page" class="flex items-center justify-center px-3 h-8 text-primary border border-gray-300 bg-primary/25 hover:bg-primary/50 hover:text-orange-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="#" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">Next</a>
-                    </li>
-                </ul>
-            </nav>
-
         </div>
     </div>
 </div>
@@ -329,4 +320,84 @@
 
         modal.classList.remove("hidden");
     }
+
+
+    const options = {
+        chart: {
+            height: "100%",
+            maxWidth: "100%",
+            type: "line",
+            fontFamily: "Inter, sans-serif",
+            dropShadow: {
+                enabled: false,
+            },
+            toolbar: {
+                show: false,
+            },
+        },
+        tooltip: {
+            enabled: true,
+            x: {
+                show: false,
+            },
+        },
+        dataLabels: {
+            enabled: false,
+        },
+        stroke: {
+            width: 6,
+        },
+        grid: {
+            show: true,
+            strokeDashArray: 4,
+            padding: {
+                left: 2,
+                right: 2,
+                top: -26
+            },
+        },
+        series: [
+            {
+                name: "Sold Counts",
+                data: [6500, 6418, 6456, 6526, 6356],
+                color: "#FF7F11",
+            },
+            {
+                name: "Sales",
+                data: [6456, 6356, 6526, 6332, 6418],
+                color: "#0C63E7",
+            },
+        ],
+        legend: {
+            show: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            categories: ['@dates[0]', '@dates[1]', '@dates[2]', '@dates[3]', '@dates[4]'],
+            labels: {
+                show: true,
+                style: {
+                    fontFamily: "Inter, sans-serif",
+                    cssClass: 'text-xs font-normal fill-gray-500 dark:fill-gray-400'
+                }
+            },
+            axisBorder: {
+                show: false,
+            },
+            axisTicks: {
+                show: false,
+            },
+        },
+        yaxis: {
+            show: false,
+        },
+    }
+
+    if (document.getElementById("line-chart") && typeof ApexCharts !== 'undefined') {
+        const chart = new ApexCharts(document.getElementById("line-chart"), options);
+        chart.render();
+    }
+
 </script>

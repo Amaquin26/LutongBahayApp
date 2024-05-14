@@ -173,7 +173,8 @@ namespace LutongBahayApp.Repository
                     FoodName = order.Food.Name,
                     Quantity = order.Quantity,
                     UnitPrice = order.Price,
-                    TotalPrice = order.Price * order.Quantity
+                    TotalPrice = order.Price * order.Quantity,
+                    Status = order.Status,
                 };
 
                 orderDetails.Add(orderedFood);

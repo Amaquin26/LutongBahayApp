@@ -12,5 +12,6 @@ namespace LutongBahayApp.Models
         public Market Market { get; set; }
         public DateTime DateSold { get; set; }
         public int SoldCount { get; set; }
+        public decimal Sales { get; set; }
     }
 }

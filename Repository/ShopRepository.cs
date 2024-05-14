@@ -2,14 +2,18 @@
 using LutongBahayApp.Interfaces;
 using LutongBahayApp.Models;
 using LutongBahayApp.ViewModels;
+using LutongBahayApp.Data.Enum;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using LutongBahayApp.ViewModels.Post;
 
 namespace LutongBahayApp.Repository
 {
-    public class ShopRepository(ApplicationDbContext context):IShopRepository
+    public class ShopRepository(ApplicationDbContext context, IHttpContextAccessor contextAccessor) :IShopRepository
     {
         private readonly ApplicationDbContext _context = context;
+        private readonly IHttpContextAccessor _contextAccessor = contextAccessor;
 
         public async Task<List<FoodListItemViewModel>> GetFoodsForShop()
         {
@@ -69,20 +73,6 @@ namespace LutongBahayApp.Repository
             if (food == null)
                 return null;
 
-            var foodReviews = _context.Reviews
-                .Include(r => r.User)
-                .OrderBy(r => r.HelpfulCount)
-                .ThenBy(r => r.DateCreated)
-                .Where(r => r.FoodId == id)
-                .ToList();
-
-            double averageRating = 0;
-
-            if (foodReviews.Any())
-            {
-                averageRating = foodReviews.Select(r => r.Rating).Average();
-            }
-
             var market = _context.Markets.Include(m => m.Foods).Where(m => m.Id == food.Market.Id).FirstOrDefault();
 
             if (market == null)
@@ -97,6 +87,48 @@ namespace LutongBahayApp.Repository
                 .ThenBy(r => r.DateCreated)
                 .Count();
 
+            var userClaim = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            string userId = "";
+            bool hasReviewed = false;
+            bool canReview = false;
+
+            if(userClaim != null)
+            {
+                userId = userClaim.Value;
+            }
+
+            Review userReview = null;
+            //check if the user already reviewed
+            var order = await _context.Orders.Include(x => x.OrderFood).Where(x => x.AppUserId == userId && x.Status == OrderStatus.Success).Select(x => x.Id).ToListAsync();
+            
+            if (order != null)
+            {
+                var orderedFood = await _context.OrderFoods.Where(x => x.FoodId == food.Id && order.Contains(x.OrderId)).FirstOrDefaultAsync();
+
+                if (orderedFood != null)
+                {
+                    canReview = true;
+
+                    hasReviewed = userReview != null;
+                }
+            }
+
+            var foodReviews = _context.Reviews
+            .Include(r => r.User)
+            .OrderBy(r => r.HelpfulCount)
+            .ThenByDescending(r => r.DateCreated)
+            .Where(r => r.FoodId == id)
+            .ToList();
+
+            userReview = foodReviews.Where(x => x.FoodId == id && x.UserId == userId).FirstOrDefault();
+            hasReviewed = userReview != null;
+            double averageRating = 0;
+
+            if (foodReviews.Any())
+            {
+                averageRating = foodReviews.Select(r => r.Rating).Average();
+            }
+
             var foodItem = new FoodItemViewModel
             {
                 Id = food.Id,
@@ -107,7 +139,10 @@ namespace LutongBahayApp.Repository
                 Price = food.Price,
                 Rating = averageRating,
                 Reviews = foodReviews,
-                MarketTotalReviews = marketReviewsCount
+                MarketTotalReviews = marketReviewsCount,
+                HasReviewed = hasReviewed,
+                UserReview = userReview,
+                CanReview = canReview
             };
 
             return foodItem;
@@ -179,6 +214,48 @@ namespace LutongBahayApp.Repository
             }
 
             return marketInfo;
+        }
+
+        public async Task PostReview(PostReviewViewModel model)
+        {
+            var userClaim = _contextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            string userId = "";
+
+            if (userClaim == null)
+                return;
+            
+            userId = userClaim.Value;
+
+            var review = await _context.Reviews.Where(x => x.UserId == userId && x.FoodId == model.FoodId).FirstOrDefaultAsync();
+            var user = await _context.Users.Where(x => x.Id == userId).FirstOrDefaultAsync();
+
+            if (user == null) return;
+
+            if(review == null)
+            {
+                var newReview = new Review
+                {
+                    UserId = userId,
+                    Title = model.Title,
+                    Comment = model.Comment,
+                    Location = user.Address,
+                    Rating = model.Rating,
+                    FoodId = model.FoodId,
+                    HelpfulCount = 0,
+                    DateCreated = DateTime.Now,
+                };
+
+                _context.Reviews.Add(newReview); 
+            }
+            else
+            {
+                review.Title = model.Title;
+                review.Comment = model.Comment;
+                review.Rating = model.Rating;
+                review.DateCreated = DateTime.Now;
+            }
+
+            await _context.SaveChangesAsync();
         }
     }
 }

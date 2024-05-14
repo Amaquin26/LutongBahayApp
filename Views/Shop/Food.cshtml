@@ -1,7 +1,26 @@
 ﻿@using LutongBahayApp.ViewModels
+@using Microsoft.AspNetCore.Identity
 @model FoodItemViewModel
+@inject UserManager<AppUser> UserManager
 @{
 
+    int stars = 1;
+    if(Model.UserReview != null)
+    {
+        stars = Model.UserReview.Rating;
+    }
+
+    string userId = "";
+    if (User.Identity.IsAuthenticated)
+    {
+        var user = await UserManager.GetUserAsync(User);
+        if (user != null)
+        {
+            userId = user.Id;
+            // You can use this userId in your view
+        }
+    }
+    
 }
 
 <div class="relative" id="home">
@@ -76,16 +95,16 @@
                         @if (User.Identity.IsAuthenticated )
                         {
                             @if (@userRole == "Customer"){
-                                <button type="button" class="cursor-pointer text-white bg-primary hover:scale-105 transition ease-out focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button>
+                                @* <button type="button" class="cursor-pointer text-white bg-primary hover:scale-105 transition ease-out focus:ring-4 focus:outline-none focus:ring-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button> *@
                                 <button type="button" id="add-cart" class="text-primary border border-primary font-medium rounded-lg text-sm px-4 py-2 hover:scale-105 transition ease-out dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Add to Basket</button>
                             }else{
-                                <button disabled class="cursor-not-allowed opacity-50 text-white bg-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button>
+                                @* <button disabled class="cursor-not-allowed opacity-50 text-white bg-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button> *@
                                 <button disabled class="cursor-not-allowed opacity-50 text-primary border border-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Add to Basket</button>                               
                             }
                             
                         }else
                         {
-                            <button disabledclass="cursor-not-allowed opacity-50 text-white bg-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button>
+                            @* <button disabledclass="cursor-not-allowed opacity-50 text-white bg-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Order</button> *@
                             <button disabled class="cursor-not-allowed opacity-50 text-primary border border-primary font-medium rounded-lg text-sm px-4 py-2 dark:bg-primary dark:hover:bg-primary dark:focus:ring-primary">Add to Basket</button>                          
                         }
                     </div>
@@ -184,9 +203,9 @@
                         percentageOfFive = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFive%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFive.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFive%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFive.ToString("0.00")%</span>
             </div>
             <div class="flex items-center mt-4">
                 <a class="text-sm font-medium text-primary dark:text-primary hover:underline">4 star</a>
@@ -197,9 +216,9 @@
                         percentageOfFour = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFour%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfFour.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFour%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfFour.ToString("0.00")%</span>
             </div>
             <div class="flex items-center mt-4">
                 <a class="text-sm font-medium text-primary dark:text-primary hover:underline">3 star</a>
@@ -210,9 +229,9 @@
                         percentageOfThree = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfThree%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfThree.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfThree%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfThree.ToString("0.00")%</span>
             </div>
             <div class="flex items-center mt-4">
                 <a class="text-sm font-medium text-primary dark:text-primary hover:underline">2 star</a>
@@ -223,9 +242,9 @@
                         percentageOfTwo = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfTwo%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfTwo.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfTwo%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfTwo.ToString("0.00")%</span>
             </div>
             <div class="flex items-center mt-4">
                 <a class="text-sm font-medium text-primary dark:text-primary hover:underline">1 star</a>
@@ -236,48 +255,99 @@
                         percentageOfOne = 0;
                 }
                 <div class="w-2/4 h-5 mx-4 bg-gray-200 rounded dark:bg-gray-700">
-                    <div class="h-5 bg-primary rounded" style="width: @percentageOfOne%"></div>
+                    <div class="h-5 bg-primary rounded" style="width: @percentageOfOne.ToString("0.00")%"></div>
                 </div>
-                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfOne%</span>
+                <span class="text-sm font-medium text-gray-500 dark:text-gray-400">@percentageOfOne.ToString("0.00")%</span>
             </div>
 
             <!-- Comments -->
             <h2 class="text-3xl mt-4 font-bold dark:text-white">Reviews</h2>
-               
-            <div class="mt-2">
-                <article class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 p-4 my-2">
-                    <div class="flex items-center mb-4">
-                        @{
-                            var pPath = "/images//profiles//no_pfp.jpg";
-                        }
-                        <div class="font-medium dark:text-white">
-                            <p>Write a Review</p>
+            @if (User.Identity.IsAuthenticated && Model.CanReview && !Model.HasReviewed)
+            {
+                <div class="mt-2">
+                    <article class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 p-4 my-2">
+                        <div class="flex items-center mb-4">
+                            <div class="font-medium dark:text-white">
+                                <p>Write a Review</p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
-                        @for (int i = 0; i < 5; i++)
-                        {
-                            <svg class="w-5 h-5 mb-1 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
-                                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
-                            </svg>
+                        <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                <button onclick="setStars(@i)">
+                                    <svg id="stars-@i" class="w-5 h-5 mb-1 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                        <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                    </svg>
+                                </button>
 
-                        }                       
-                    </div>
-                    <form>
-                        <input hidden name="rating" value="0"/>
-                        <div class="mb-2">
-                            <input placeholder="Title" type="text" id="title" name="title" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            }
                         </div>
-                        <div>
-                            <textarea id="comment" name="comment" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Comment" required></textarea>
+                        <form asp-action="PostReview">
+                            <input hidden name="rating" value=1 id="star-input" />
+                            <input hidden name="foodId" value="@Model.Id" />
+                            <div class="mb-2">
+                                <input placeholder="Title" type="text" id="title" name="title" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <textarea id="comment" name="comment" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Comment" required></textarea>
+                            </div>
+                            <button type="submit" class="mt-2 text-white bg-primary hover:bg-orange-800 focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+                        </form>
+                    </article>
+                </div>
+            }
+            else if (User.Identity.IsAuthenticated && Model.HasReviewed)
+            {
+                <div class="mt-2">
+                    <article class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 p-4 my-2">
+                        <div class="flex items-center mb-4">
+                            <div class="font-medium dark:text-white">
+                                <p>Edit Review</p>
+                            </div>
                         </div>
-                        <button type="submit" class="mt-2 text-white bg-primary hover:bg-blue-800 focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
-                    </form>
-                </article>
-            </div>
+                        <div class="flex items-center mb-1 space-x-1 rtl:space-x-reverse">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                @if (i < Model.UserReview.Rating)
+                                {
+                                    <button onclick="setStars(@i)">
+                                        <svg id="stars-@i" class="w-4 h-4 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button onclick="setStars(@i)">
+                                        <svg id="stars-@i" class="w-4 h-4 text-gray-200 dark:text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 22 20">
+                                            <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+                                        </svg>
+                                    </button>
+                                }
+
+                            }
+                        </div>
+                        <form asp-action="PostReview">
+                            <input hidden name="rating" value=1 id="star-input" />
+                            <input hidden name="foodId" value="@Model.Id" />
+                            <div class="mb-2">
+                                <input placeholder="Title" type="text" id="title" value="@Model.UserReview.Title" name="title" class="block w-full p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-sm focus:ring-primary focus:border-primary dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            </div>
+                            <div>
+                                <textarea id="comment" name="comment" value="" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Comment" required>@Model.UserReview.Comment</textarea>
+                            </div>
+                            <button type="submit" class="mt-2 text-white bg-primary hover:bg-orange-700 focus:ring-4 focus:ring-primary font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Submit</button>
+                        </form>
+                    </article>
+                </div>
+            }
 
             @foreach(var review in Model.Reviews)
             {
+                if(userId == review.UserId){
+                    continue;
+                }
+
                 <div class="mt-2">
                     <article class="border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-800 dark:border-gray-700 p-4 my-2">
                         <div class="flex items-center mb-4">
@@ -377,17 +447,137 @@
     const quantityInput = document.getElementById('quantity-input');
     const foodId = document.getElementById('foodId');
 
+    function setStars(star) { 
+        const star1 = document.getElementById('stars-0');
+        const star2 = document.getElementById('stars-1');
+        const star3 = document.getElementById('stars-2');
+        const star4 = document.getElementById('stars-3');
+        const star5 = document.getElementById('stars-4');
+        const starInput = document.getElementById('star-input');
+
+        star += 1;
+
+        starInput.value = star;
+
+        if (star == 1) {
+            star1.classList.remove('text-primary');
+            star1.classList.remove('text-gray-200');
+            star1.classList.add('text-primary');
+
+            star2.classList.remove('text-primary');
+            star2.classList.remove('text-gray-200');
+            star2.classList.add('text-gray-200');
+
+            star3.classList.remove('text-primary');
+            star3.classList.remove('text-gray-200');
+            star3.classList.add('text-gray-200');
+
+            star4.classList.remove('text-primary');
+            star4.classList.remove('text-gray-200');
+            star4.classList.add('text-gray-200');
+
+            star5.classList.remove('text-primary');
+            star5.classList.remove('text-gray-200');
+            star5.classList.add('text-gray-200');
+        }
+
+        if (star == 2) {
+            star2.classList.remove('text-primary');
+            star2.classList.remove('text-gray-200');
+            star2.classList.add('text-primary');
+
+            star1.classList.remove('text-primary');
+            star1.classList.remove('text-gray-200');
+            star1.classList.add('text-primary');
+
+            star3.classList.remove('text-primary');
+            star3.classList.remove('text-gray-200');
+            star3.classList.add('text-gray-200');
+
+            star4.classList.remove('text-primary');
+            star4.classList.remove('text-gray-200');
+            star4.classList.add('text-gray-200');
+
+            star5.classList.remove('text-primary');
+            star5.classList.remove('text-gray-200');
+            star5.classList.add('text-gray-200');
+        }
+
+        if (star == 3) {
+            star3.classList.remove('text-primary');
+            star3.classList.remove('text-gray-200');
+            star3.classList.add('text-primary');
+
+            star1.classList.remove('text-primary');
+            star1.classList.remove('text-gray-200');
+            star1.classList.add('text-primary');
+
+            star2.classList.remove('text-primary');
+            star2.classList.remove('text-gray-200');
+            star2.classList.add('text-primary');
+
+            star4.classList.remove('text-primary');
+            star4.classList.remove('text-gray-200');
+            star4.classList.add('text-gray-200');
+
+            star5.classList.remove('text-primary');
+            star5.classList.remove('text-gray-200');
+            star5.classList.add('text-gray-200');
+        }
+
+        if (star == 4) {
+            star4.classList.remove('text-primary');
+            star4.classList.remove('text-gray-200');
+            star4.classList.add('text-primary');
+
+            star1.classList.remove('text-primary');
+            star1.classList.remove('text-gray-200');
+            star1.classList.add('text-primary');
+
+            star2.classList.remove('text-primary');
+            star2.classList.remove('text-gray-200');
+            star2.classList.add('text-primary');
+
+            star3.classList.remove('text-primary');
+            star3.classList.remove('text-gray-200');
+            star3.classList.add('text-primary');
+
+            star5.classList.remove('text-primary');
+            star5.classList.remove('text-gray-200');
+            star5.classList.add('text-gray-200');
+        }
+
+        if (star == 5) {
+            star5.classList.remove('text-primary');
+            star5.classList.remove('text-gray-200');
+            star5.classList.add('text-primary');
+
+            star1.classList.remove('text-primary');
+            star1.classList.remove('text-gray-200');
+            star1.classList.add('text-primary');
+
+            star2.classList.remove('text-primary');
+            star2.classList.remove('text-gray-200');
+            star2.classList.add('text-primary');
+
+            star3.classList.remove('text-primary');
+            star3.classList.remove('text-gray-200');
+            star3.classList.add('text-primary');
+
+            star4.classList.remove('text-primary');
+            star4.classList.remove('text-gray-200');
+            star4.classList.add('text-primary');
+        }
+    }
+
+
     decrementButton.addEventListener('click', () => {
       let currentValue = parseInt(quantityInput.value) || 1; // Handle empty input as 0
-      if (currentValue > 1) {
-        currentValue--;
-        quantityInput.value = currentValue;
-      }
+      quantityInput.value = currentValue;
     });
 
     incrementButton.addEventListener('click', () => {
       let currentValue = parseInt(quantityInput.value) || 1; // Handle empty input as 0
-      currentValue++;
       quantityInput.value = currentValue;
     });
 

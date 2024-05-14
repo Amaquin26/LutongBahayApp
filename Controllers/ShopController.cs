@@ -1,5 +1,6 @@
 ﻿using LutongBahayApp.Interfaces;
 using LutongBahayApp.ViewModels;
+using LutongBahayApp.ViewModels.Post;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LutongBahayApp.Controllers
@@ -39,6 +40,13 @@ namespace LutongBahayApp.Controllers
             }
 
             return View(market);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> PostReview(PostReviewViewModel model)
+        {
+            await _shopRepository.PostReview(model);
+            return RedirectToAction("Food", new { id = model.FoodId });
         }
     }
 }

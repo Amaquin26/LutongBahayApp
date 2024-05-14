@@ -1,4 +1,6 @@
-﻿namespace LutongBahayApp.ViewModels
+﻿using LutongBahayApp.Data.Enum;
+
+namespace LutongBahayApp.ViewModels
 {
     public class OrderDetailsViewModel
     {
@@ -8,5 +10,6 @@
         public int Quantity { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal TotalPrice { get; set; }
+        public FoodOrderStatus Status { get; set; }
     }
 }

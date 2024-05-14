@@ -31,6 +31,10 @@ namespace LutongBahayApp.Controllers
         {
             var orderDetail = await _orderRepository.GetOrderDetails(id);
 
+            if (orderDetail == null || orderDetail.Foods == null)
+                return RedirectToAction("NotFound","Errors");
+
+
             return View(orderDetail);
         }
 

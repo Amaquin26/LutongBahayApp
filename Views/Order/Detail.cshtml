@@ -63,9 +63,13 @@
                             <th scope="col" class="px-6 py-3">
                                 Total Price
                             </th>
+                            <th scope="col" class="px-6 py-3">
+                                Status
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
+                        
                         @foreach(var food in Model.Foods)
                         {
                             <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -85,6 +89,9 @@
                                 </td>
                                 <td class="px-6 py-4 font-semibold text-gray-900 dark:text-white">
                                     @food.TotalPrice.ToString("C")
+                                </td>
+                                <td class="px-6 py-4 font-semibold dark:text-white">
+                                    @food.Status
                                 </td>
                             </tr>
                         }           

@@ -10,5 +10,6 @@ namespace LutongBahayApp.ViewModels
         public double PriceGrowth { get; set; }
         public double SalesGrowth { get; set; }
         public int TotalSold { get; set; }
+        public decimal TotalSales {  get; set; }
     }
 }

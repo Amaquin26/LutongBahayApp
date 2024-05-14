@@ -87,7 +87,10 @@
 
             <!-- Chart -->
             <div class="my-5 w-full p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-                <h2 class="text-2xl mt-4 font-bold dark:text-white mb-2">Total Sold: <span class="font-medium">@Model.TotalSold</span></h2>        
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl mt-4 font-bold dark:text-white mb-2">Total Sold: <span class="font-medium">@Model.TotalSold</span></h2>
+                    <h2 class="text-2xl mt-4 font-bold dark:text-white mb-2">Total Sales: <span class="font-medium">@Model.TotalSales.ToString("C")</span></h2>
+                </div>     
                 
                 <div class="flex justify-around items-center flex-col md:flex-row gap-2">
 
@@ -105,9 +108,10 @@
                             </div>
                             @{
                                 string color = Model.SalesGrowth > 0.01 ? "text-green-500" : "text-red-500";
+                                color = Model.SalesGrowth == 0 ? "" : color;
                                 string flip = Model.SalesGrowth > 0.01 ? "" : "scale-y-[-1]";
                                 color = soldEnoughData ? color : "";
-                                string visible = soldEnoughData ? "" : "hidden";
+                                string visible = soldEnoughData && Model.SalesGrowth != 0 ? "" : "hidden";
                             }
                             <div class="flex items-center px-2.5 py-0.5 text-base font-semibold @color dark:text-green-500 text-center">
                                 @Model.SalesGrowth.ToString("0.00") %
@@ -166,9 +170,10 @@
                             </div>
                             @{
                                 string c = Model.PriceGrowth > 0.01 ? "text-red-500" : "text-green-500";
+                                c = Model.PriceGrowth == 0 ? "" : c;
                                 string f = Model.PriceGrowth > 0.01 ? "" : "scale-y-[-1]";
                                 c = pricesEnoughData ? c : "";
-                                string vsible = pricesEnoughData ? "" : "hidden";
+                                string vsible = pricesEnoughData && Model.PriceGrowth != 0 ? "" : "hidden";
                             }
                             <div class="flex items-center px-2.5 py-0.5 text-base font-semibold @c dark:text-green-500 text-center">
                                 @Model.PriceGrowth.ToString("0.00") %
@@ -421,7 +426,7 @@
                     </div>
                     <div class="col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Food Description</label>
-                        <textarea name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write food description here"></textarea>
+                        <textarea name="description" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary focus:border-primary dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write food description here">@Model.FoodItemViewModel.Description</textarea>
                     </div>
                     <div class="col-span-2">
                         <label class="block mb-2 text-sm font-medium text-gray-900 dark:text-white" for="small_size">Image File</label>

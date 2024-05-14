@@ -14,6 +14,9 @@ namespace LutongBahayApp.ViewModels
         public decimal Price { get; set; }
 
         public double Rating { get; set; } = 0;
+        public bool HasReviewed { get; set; } = false;     
         public List<Review> Reviews { get; set; }
+        public Review UserReview { get; set; }
+        public bool CanReview { get; set; }
     }
 }

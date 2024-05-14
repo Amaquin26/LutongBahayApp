@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LutongBahayApp.Data.Enum;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LutongBahayApp.Models
@@ -11,6 +12,7 @@ namespace LutongBahayApp.Models
         public string Address { get; set; }
         public string Location { get; set; }
         public DateTime DateCreated { get; set; }
+        public IdentityStatus Status { get; set; } = IdentityStatus.Active;
         public bool IsVerified { get; set; }
         [ForeignKey("AspNetUsers")]
         public string UserId { get; set; }

@@ -13,6 +13,6 @@ namespace LutongBahayApp.Models
         public AppUser AppUser { get; set; }
         public string Subject { get; set; }
         public string Description { get; set; }
-        public ReportIncidentStatus ReportIncidentStatus { get; set; }
+        public ReportIncidentStatus ReportIncidentStatus { get; set; } = ReportIncidentStatus.Unresolved;
     }
 }
