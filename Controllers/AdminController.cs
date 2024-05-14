@@ -4,7 +4,7 @@ namespace LutongBahayApp.Controllers
 {
     public class AdminController : Controller
     {
-        public IActionResult Dashboard()
+        public IActionResult Panel()
         {
             return View();
         }

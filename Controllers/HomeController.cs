@@ -41,7 +41,7 @@ namespace LutongBahayApp.Controllers
 
             if (roles.Contains("Admin"))
             {
-                return View();
+                return RedirectToAction("Panel","Admin");
             }else if (roles.Contains("Seller"))
             {
                 return RedirectToAction("Dashboard", "Market");
@@ -54,11 +54,6 @@ namespace LutongBahayApp.Controllers
             {
                 return View();
             }          
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

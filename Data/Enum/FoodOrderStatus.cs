@@ -3,7 +3,7 @@
     public enum FoodOrderStatus
     {
         Pending,
-        Decline,
-        Accept,
+        Declined,
+        Accepted,
     }
 }

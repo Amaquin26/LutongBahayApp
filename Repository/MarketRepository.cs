@@ -363,17 +363,17 @@ namespace LutongBahayApp.Repository
             if (flag == 0)
             {
                 
-                orderedFood.Status = FoodOrderStatus.Decline;
+                orderedFood.Status = FoodOrderStatus.Declined;
                 order.Status = OrderStatus.Cancelled;
                 await _context.SaveChangesAsync();
             }
             else
             {
-                orderedFood.Status = FoodOrderStatus.Accept;
+                orderedFood.Status = FoodOrderStatus.Accepted;
                 await _context.SaveChangesAsync();
 
                 var orderCounts = order.OrderFood.Count();
-                var orderedAccepted = order.OrderFood.Where(x => x.Status == FoodOrderStatus.Accept).Count();
+                var orderedAccepted = order.OrderFood.Where(x => x.Status == FoodOrderStatus.Accepted).Count();
 
                 if(orderCounts == orderedAccepted)
                 {

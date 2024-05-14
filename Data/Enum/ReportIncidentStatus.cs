@@ -3,8 +3,8 @@
     public enum ReportIncidentStatus
     {
         Unresolved,
-        Ignored,
         OnGoing,
-        Resolved
+        Resolved,
+        Ignored
     }
 }
